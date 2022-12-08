@@ -51,10 +51,13 @@ class LoginController extends BaseController
         }elseif ($_SERVER['REQUEST_METHOD'] == 'POST'){
             $account = new Account();
             if ($account->login()){
-                $data = ['StatusCode' => 0, 'Message' => 'ok'];
+                //$data = ['StatusCode' => 0, 'Message' => 'ok'];
+                header("Location: /app/choose");
             }else{
-                $data = ['StatusCode' => 1, 'Message' => 'Sikertelen bejelentkezés'];
+                //$data = ['StatusCode' => 1, 'Message' => 'Sikertelen bejelentkezés'];
+                header("Location: /login?StatusCode=1");
             }
+            die();
             echo json_encode($data);
             die();
         }
@@ -70,7 +73,7 @@ class LoginController extends BaseController
 
     public function register($post)
     {
-        header('Content-Type: application/json; charset=utf-8');
+        //header('Content-Type: application/json; charset=utf-8');
         $account = new Account();
         $account->registration($post);
 

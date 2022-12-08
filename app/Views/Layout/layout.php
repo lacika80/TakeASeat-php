@@ -13,6 +13,7 @@ $google = new GoogleConfig();
 if ($google->isValid()){
     require_once('Nav.php');
 }
+if (isset($view))
 require_once('app/Views/Application/' . $view . '.php'); ?>
 </body>
 
@@ -23,7 +24,7 @@ require_once('app/Views/Application/' . $view . '.php'); ?>
         font-family: 'JetBrains Mono', monospace;
         color: #333333;
         font-size: 16px;
-        color: white;
+        /*color: white;*/
     }
 
     .vertical-center {
@@ -49,3 +50,29 @@ require_once('app/Views/Application/' . $view . '.php'); ?>
         transform: translateX(-50%);
     }
 </style>
+<?php if ( isset( $_GET["StatusCode"] ) ) { ?>
+    <script>
+        function delay(time) {
+            return new Promise(resolve => setTimeout(resolve, time));
+        }
+
+        delay(500).then(() => alert('<?php switch ($_GET["StatusCode"]){
+            case 0:
+                echo "ok";
+                break;
+            case 1:
+                echo "Sikertelen bejelentkezés";
+                break;
+            case 2:
+                echo "Kötelező mező hiányzik";
+                break;
+            case 3:
+                echo "Jelszavak nem egyeznek";
+                break;
+            case 4:
+                echo "Ezzel az e-maillel már regisztáltak";
+                break;
+        }?>'));
+
+    </script>
+<?php } ?>

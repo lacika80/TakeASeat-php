@@ -8,7 +8,7 @@ class AppController extends BaseController
 {
     function __construct() {
         $google = new GoogleConfig();
-        if (!$google->isValid()){
+        if (!($google->isValid() || $_SESSION["LoggedIn"])){
             header("Location: /login");
             die();
         }

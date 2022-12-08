@@ -44,12 +44,16 @@ class Account extends Db
         $required = ['rFamilyName', 'rGivenName', 'remail', 'rpassword', 'rpassword2'];
         foreach ($required as $key) {
             if (empty($post[$key])) {
+                header("Location: /login?register=true&StatusCode=2");
+                die;
                 $data = ['StatusCode' => 1, 'Message' => 'Field is missing'];
                 echo json_encode($data);
                 die();
             }
         }
         if ($post['rpassword2'] != $post['rpassword']) {
+            header("Location: /login?register=true&StatusCode=3");
+            die;
             $data = ['StatusCode' => 2, 'Message' => 'Password mismatch'];
             echo json_encode($data);
             die();
@@ -57,6 +61,8 @@ class Account extends Db
 
         //e-mail cím ellenörzése
         if ($this->isEmailExists($post["remail"])) {
+            header("Location: /login?register=true&StatusCode=4");
+            die;
             $data = ['StatusCode' => 3, 'Message' => 'Email exists'];
             echo json_encode($data);
             die();
