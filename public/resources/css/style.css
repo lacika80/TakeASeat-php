@@ -1,0 +1,136 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500,400italic,300italic,500italic,700,700italic&subset=latin,latin-ext&display=swap);
+
+@font-face{
+    font-family: 'Pacifico';
+    src: local('Pacifico Regular'), local('Pacifico-Regular'), url(https://fonts.gstatic.com/s/pacifico/v12/FwZY7-Qmy14u9lezJ-6H6MmBp0u-.woff2) format('woff2');
+    font-display: swap;
+}
+
+body,h1,h2,h3,h4,h5,h6,p,a,span,label,input,li,ul,ol,div{
+    font-family: 'Roboto', sans-serif;
+    color: #333333;
+    font-size: 16px;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+}
+
+
+::selection {
+  background: #ac2d49; /* WebKit/Blink Browsers */
+  color: #fff;
+}
+::-moz-selection {
+  background: #ac2d49; /* Gecko Browsers */
+  color: #fff;
+}
+
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus {   
+  border-color: rgba(172, 45, 73, 0.8);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(172, 45, 73, 0.6);
+  outline: 0 none;
+}
+
+.content-width{
+    max-width: 1320px;
+    margin: 0 auto;
+}
+
+.no-padding {
+    padding: 0;
+    margin: 0;
+}
+
+h1{
+    font-size: 50px;
+    margin: 30px 0;
+}
+
+h2{
+    font-size: 18px;
+    margin: 30px 0;
+    color: #333333;
+    margin-left: 10px;
+}
+
+h3{
+    font-weight: 100;
+    font-size: 20px;
+    margin: 20px 0;
+}
+
+h4{
+    font-size: 24px;
+    margin: 30px 0;
+}
+
+p{
+    font-weight: 100;
+    font-size: 15px;
+}
+
+.bg{
+    background-position: center center !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
+
+.clear{
+    clear: both;
+}
+
+#homepage-slider .swiper-slide{
+    height: 500px;
+}
+
+.static img{
+    max-width: 100%;
+    width: 100%;
+}
+
+footer{
+    background: #d1d1d1;
+    text-align: center;
+    padding: 15px;
+}
+
+footer p{
+    margin-bottom: 0;
+}
+
+@media (max-width: 767px){
+    
+}
+
+@media (min-width: 768px) and (max-width: 992px){
+    
+}
+
+@media (min-width: 993px) and (max-width: 1200px){
+    
+}
+
+@media (min-width: 1201px) and (max-width: 1366px){
+    
+}
+
+@media (min-width: 1367px){
+  
+}

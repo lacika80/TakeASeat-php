@@ -1,0 +1,15 @@
+RewriteEngine on
+# Rewrite /Controller as /Controller/Index
+RewriteRule ^([a-zA-Z0-9]+)/?$ index.php?Controller=$1&Action=Index [L,QSA]
+# Rewrite /Controller/Action(/Id?Querystring)
+RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9]+)/?(/([a-zA-Z0-9]+)/?)?$ index.php?Controller=$1&Action=$2&Id=$4 [L,QSA]
+php_value short_open_tag 1
+php_flag display_startup_errors on
+php_flag display_errors on
+php_flag html_errors on
+
+#prevent view of htaccess and htpassword files directly
+<Files .* >
+order allow,deny
+deny from all
+</Files>

@@ -1,0 +1,20 @@
+{
+    "name": "lacika80/take-a-seat",
+    "license": "GNU GPLv3",
+    "autoload": {
+        "psr-4": {
+          "App\\": "app/",    
+          "":["bootstrap/"]
+        }
+      },
+    "authors": [
+        {
+            "name": "László Gyurkovics"
+        }
+    ],
+    "require": {
+      "ext-json": "*",
+        "google/apiclient": "^2.12",
+      "ext-pdo": "*"
+    }
+}
