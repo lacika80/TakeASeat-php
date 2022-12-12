@@ -13,8 +13,7 @@ class LoginController extends BaseController
 
     function __construct()
     {
-        $google = GoogleConfig::getInstance();
-        $this->client = $google->getClient();
+
     }
 
     public function index()
@@ -85,9 +84,9 @@ class LoginController extends BaseController
         $account = new Account();
         $registration = $account->registration($post);
         if ($registration == 0) {
-            header("Location: /app/choose");
+            header("Location: /app/choose?StatusCode=6");
         } else {
-            header("Location: /login?register=true&StatusCode=" . "$registration");
+            header("Location: /login?register=true&StatusCode=" . $registration);
         }
         die();
     }

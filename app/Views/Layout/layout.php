@@ -10,9 +10,9 @@ require_once('HeaderLayout.php');?>
 
 require_once('DevsVariables.php');
 $google = new GoogleConfig();
-//if ($google->isValid() || (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"])){
+if (isset($_SESSION["loggedIn"])){
     require_once('Nav.php');
-//}
+}
 if (isset($view))
 require_once('app/Views/Application/' . $view . '.php'); ?>
 </body>
@@ -74,6 +74,18 @@ require_once('app/Views/Application/' . $view . '.php'); ?>
                 break;
             case 5:
                 echo "Ismeretlen hiba lépett fel";
+                break;
+            case 6:
+                echo "Sikeres regisztrálás, kérem érvényesítse e-mail címét";
+                break;
+            case 7:
+                echo "A link már nem érvényes";
+                break;
+            case 8:
+                echo "Érvénytelen link";
+                break;
+            case 9:
+                echo "Sikeres aktiválta e-mail címét";
                 break;
         }?>'));
 

@@ -55,11 +55,11 @@ class Account extends Db
                 'password' => password_hash($post['rpassword'], PASSWORD_DEFAULT)
             ))) {
             $user = $this->getUserByEmail($post["remail"]);
-            if ($this->createEmail($post["remail"], 3, null, $user["id"]))
-                echo "asd";
-            else echo "false";
-            die();
-            return 0;
+            if ($this->createEmail($post["remail"], 3, null, $user["id"])) {
+                $this->sessionFiller($this->getUserByEmail($post["remail"]));
+                return 0;
+            }
+
         }
         return 5;
     }
@@ -129,9 +129,9 @@ class Account extends Db
                 return false;
                 break;
             case 3:
-                $expires->add(new DateInterval('PT01H')); // 1 hour
+                $expires->modify('+1 hour');
                 $stmt = $this->pdo_connect_mysql()->prepare('INSERT INTO dynamic_links (type,  date_valid_until, email, receiver_id,  link) VALUES (?, ?, ?, ?, ?)');
-                if ($stmt->execute([$type, $expires->format('U'), $to, $receiverId, $token])) {
+                if ($stmt->execute([$type, $expires->format('Y-m-d H:i:s'), $to, $receiverId, $token])) {
                     $message = '<p>A regisztrációdat kérlek erősítsd meg az alábbi linken: </br>';
                     $message .= sprintf('<a href="%s">%s</a></p>', $url, $url);
                     $message .= '<p>Thanks!</p>';
@@ -372,5 +372,34 @@ class Account extends Db
     public function validateSession()
     {
 
+    }
+
+    public function specURL(string $token)
+    {
+        $stmt = $this->pdo_connect_mysql()->prepare('SELECT * FROM dynamic_links WHERE link = ? limit 1');
+        if ($stmt->execute([$token])) {
+            $dynamicLink = $stmt->fetch(PDO::FETCH_ASSOC);
+            $now=new DateTime('NOW');
+            $validUntil = new DateTime($dynamicLink["date_valid_until"]);
+            if ($now > $validUntil)
+                return 7;
+            if ($dynamicLink["date_of_used"] != null)
+                return 8;
+            switch ($dynamicLink["type"]) {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+
+                    $stmt = $this->pdo_connect_mysql()->prepare('update user set is_verified=?, global_permissions=? where email=?');
+                    $stmt->execute([true, true, $dynamicLink["email"]]);
+                    $stmt = $this->pdo_connect_mysql()->prepare('update dynamic_links set date_of_used=? where link=?');
+                    $stmt->execute([$now->format('Y-m-d H:i:s'),$dynamicLink["link"]]);
+return 3;
+                    break;
+            }
+        }
+        return 8;
     }
 }

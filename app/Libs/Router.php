@@ -34,8 +34,8 @@ class Router
             exit();
             }
             else{
-                header("HTTP/1.0 404 Not Found");
-                die();
+                $indexController = new App\Controllers\IndexController();
+                $indexController->specURL();
             }
             exit();
 

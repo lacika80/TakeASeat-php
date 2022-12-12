@@ -47,6 +47,8 @@ class BaseController extends PermissionControl
                 return false;
             }
         } else {
+            $account = new Account();
+            $account->sessionFiller($account->getUserByEmail($_SESSION["email"]));
             return true;
         }
     }

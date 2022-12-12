@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Controllers;
+use App\Models\Account;
+
 class IndexController extends BaseController{
 
     public function index(){
@@ -17,5 +19,20 @@ class IndexController extends BaseController{
     }
     public function blogPost(){
         return "index blogpost";
+    }
+
+    public function specURL()
+    {
+
+        $account = new Account();
+        $code = $account->specURL($_GET["Controller"]);
+        switch ($code){
+            case 3:
+                header("Location: /app/choose?StatusCode=9");
+                break;
+        }
+        if ($code>3)
+            header("Location: /login?StatusCode=".$code);
+        die();
     }
 }

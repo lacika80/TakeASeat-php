@@ -23,7 +23,7 @@
                         </div>
                     </div>
                     <label for="remail" class="mt-3 mb-0 text-light mx-auto" style="width: 65%">Email cím</label>
-                    <input type="email" class="form-control mx-auto" id="remail" autocomplete="email" name="remail"
+                    <input type="email" class="form-control mx-auto" id="remail" autocomplete="email" value="root@localhost.com" name="remail"
                            style="width: 70%" required>
                     <label for="password" class="mt-3 mb-0 text-light mx-auto" style="width: 65%">Jelszó</label>
                     <input type="password" class="form-control mx-auto" style="width: 70%" name="rpassword"
