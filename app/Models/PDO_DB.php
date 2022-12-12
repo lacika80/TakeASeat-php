@@ -67,6 +67,8 @@ class PDO_DB
         if ( (empty( $table ) || empty( $data )) || !is_array($data) ) {
             return false;
         }
+        $columns ="";
+            $placeholders="";
 
         // Parse data for column and placeholder names
         foreach ($data as $key => $value) {

@@ -10,9 +10,9 @@ require_once('HeaderLayout.php');?>
 
 require_once('DevsVariables.php');
 $google = new GoogleConfig();
-if ($google->isValid()){
+//if ($google->isValid() || (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"])){
     require_once('Nav.php');
-}
+//}
 if (isset($view))
 require_once('app/Views/Application/' . $view . '.php'); ?>
 </body>
@@ -71,6 +71,9 @@ require_once('app/Views/Application/' . $view . '.php'); ?>
                 break;
             case 4:
                 echo "Ezzel az e-maillel már regisztáltak";
+                break;
+            case 5:
+                echo "Ismeretlen hiba lépett fel";
                 break;
         }?>'));
 

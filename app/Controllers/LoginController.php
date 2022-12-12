@@ -6,26 +6,25 @@ use App\Libs\GoogleConfig;
 use App\Models\Account;
 use App\Models\DTOs\Accountdto;
 use Google\Client;
-use Google_Client;
-use Google_Service_Oauth2;
+use http\Cookie;
 
 class LoginController extends BaseController
 {
-    private Client $client;
 
     function __construct()
     {
-        $google = new GoogleConfig();
+        $google = GoogleConfig::getInstance();
         $this->client = $google->getClient();
     }
 
     public function index()
     {
+        if ($this->loginCheck())
+            header("Location: /app/choose");
+
+
         $google = new GoogleConfig();
-        if ($google->isValid()){
-            header("Location: app/choose");
-            die();
-        }
+
         $data = [
             "bootstrap",
             "loginURL" => $this->client->createAuthUrl(),
@@ -43,17 +42,22 @@ class LoginController extends BaseController
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             if (isset($_GET["code"])) {
-                $token = $this->client->fetchAccessTokenWithAuthCode($_GET['code']);
-                $this->client->setAccessToken($token);
-                $_SESSION["token"] = $token;
-                header("Location: /app/choose");
-            } else header("Location: /login");
-        }elseif ($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $account = new Account();
+                if ($account->loginViaGoogle()) {
+                    header("Location: /app/choose");
+                } else {
+                    header("Location: /login?StatusCode=1");
+                }
+
+                die();
+            } else header("Location: /login?StatusCode=1");
+            die();
+        } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $account = new Account();
-            if ($account->login()){
+            if ($account->login()) {
                 //$data = ['StatusCode' => 0, 'Message' => 'ok'];
                 header("Location: /app/choose");
-            }else{
+            } else {
                 //$data = ['StatusCode' => 1, 'Message' => 'Sikertelen bejelentkezés'];
                 header("Location: /login?StatusCode=1");
             }
@@ -65,19 +69,27 @@ class LoginController extends BaseController
 
     public function logout()
     {
-
-        $this->client->revokeToken($_SESSION["token"]);
+        if (isset($this->client))
+        $this->client->revokeToken($_SESSION['refresh_token']);
+        $account = new Account();
+        $account->revokeRememberMeToken();
         session_destroy();
-        header("Location: /login");
+        setcookie("rememberMe", "", time() - 3600, '/');
+        setcookie('google_refresh_token', "", time() - 3600, '/');
+        header("Location: /");
     }
 
     public function register($post)
     {
         //header('Content-Type: application/json; charset=utf-8');
         $account = new Account();
-        $account->registration($post);
-
-
+        $registration = $account->registration($post);
+        if ($registration == 0) {
+            header("Location: /app/choose");
+        } else {
+            header("Location: /login?register=true&StatusCode=" . "$registration");
+        }
+        die();
     }
 
 

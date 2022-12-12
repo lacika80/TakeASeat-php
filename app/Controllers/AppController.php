@@ -3,17 +3,23 @@
 namespace App\Controllers;
 
 use App\Libs\GoogleConfig;
+use App\Libs\Permissions;
+use App\Models\Account;
+use Google_Service_Oauth2;
 
 class AppController extends BaseController
 {
+
     function __construct() {
-        $google = new GoogleConfig();
-        if (!($google->isValid() || $_SESSION["LoggedIn"])){
-            header("Location: /login");
-            die();
-        }
+        if(!$this->loginCheck())
+        {$loginCtrl = new LoginController();
+            $loginCtrl->logout();}
     }
     public function choose(){
+       /* $_SESSION["permissions"]=4;
+        if ($this->checkPermission(Permissions::DeleteReservation))
+            print_r("delete");
+        else print_r("bukta");*/
         $data = [
             "bootstrap",
             /* "swiper"*/

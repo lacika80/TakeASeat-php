@@ -77,7 +77,7 @@ class Router
                             $login = new LoginController();
                             $action = $_GET["Action"];
                             $login->$action();
-                        } elseif ($_SESSION["LoggedIn"]) {
+                        } elseif ($_SESSION["loggedIn"]) {
 
                             $action;
                             if (strtolower($_GET["Action"]) == "index") {
