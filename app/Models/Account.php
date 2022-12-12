@@ -89,9 +89,9 @@ class Account extends Db
         $expires = new DateTime('NOW');
         switch ($type) {
             case 1:
-                $expires->add(new DateInterval('PT01H')); // 1 hour
+                $expires->modify('+1 hour');
                 $stmt = $this->pdo_connect_mysql()->prepare('INSERT INTO dynamic_links (type,   date_valid_until, email, receiver_id,   link) VALUES (?, ?, ?, ?, ?)');
-                if ($stmt->execute([$type, $expires->format('U'), $to, $receiverId, $token])) {
+                if ($stmt->execute([$type, $expires->format('Y-m-d H:i:s'), $to, $receiverId, $token])) {
                     $message = '<p>Pw reset kérelem ';
                     $message .= 'Ha nem te kérted, akkor hagyd figyelmen kívül</p>';
                     $message .= '<p>A visszaállításhoz itt a link:</br>';
@@ -109,9 +109,9 @@ class Account extends Db
                 return false;
                 break;
             case 2:
-                $expires->add(new DateInterval('PT01D')); // 1 day
+                $expires->modify('+1 day');
                 $stmt = $this->pdo_connect_mysql()->prepare('INSERT INTO dynamic_links (type, sender_id, restaurant_id, date_valid_until, email,  permissions,  link) VALUES (?, ?, ?, ?, ?, ?,?)');
-                if ($stmt->execute([$type, $senderId, $restaurantId, $expires->format('U'), $to, $permissions, $token])) {
+                if ($stmt->execute([$type, $senderId, $restaurantId, $expires->format('Y-m-d H:i:s'), $to, $permissions, $token])) {
                     $message = '<p>Meghívtak, hogy csatlakozz az éttermed kezelésébe.... ';
                     $message .= 'igen majd át kell irni de nah</p>';
                     $message .= '<p>Ezen a linken tudsz regisztálni:</br>';
@@ -379,7 +379,7 @@ class Account extends Db
         $stmt = $this->pdo_connect_mysql()->prepare('SELECT * FROM dynamic_links WHERE link = ? limit 1');
         if ($stmt->execute([$token])) {
             $dynamicLink = $stmt->fetch(PDO::FETCH_ASSOC);
-            $now=new DateTime('NOW');
+            $now = new DateTime('NOW');
             $validUntil = new DateTime($dynamicLink["date_valid_until"]);
             if ($now > $validUntil)
                 return 7;
@@ -387,7 +387,18 @@ class Account extends Db
                 return 8;
             switch ($dynamicLink["type"]) {
                 case 1:
-                    break;
+                    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+                        header("Location: /Login/pwreset?token=" . $token);
+                        die();
+                    } else {
+                        if ($_POST["password"] != $_POST["password2"])
+                            return 12;
+                        $stmt = $this->pdo_connect_mysql()->prepare('update user set password=? where email=?');
+                        $stmt->execute([password_hash($_POST["password"], PASSWORD_DEFAULT), $dynamicLink["email"]]);
+                        $stmt = $this->pdo_connect_mysql()->prepare('update dynamic_links set date_of_used=? where link=?');
+                        $stmt->execute([$now->format('Y-m-d H:i:s'), $dynamicLink["link"]]);
+                        return 1;
+                    }
                 case 2:
                     break;
                 case 3:
@@ -395,11 +406,20 @@ class Account extends Db
                     $stmt = $this->pdo_connect_mysql()->prepare('update user set is_verified=?, global_permissions=? where email=?');
                     $stmt->execute([true, true, $dynamicLink["email"]]);
                     $stmt = $this->pdo_connect_mysql()->prepare('update dynamic_links set date_of_used=? where link=?');
-                    $stmt->execute([$now->format('Y-m-d H:i:s'),$dynamicLink["link"]]);
-return 3;
-                    break;
+                    $stmt->execute([$now->format('Y-m-d H:i:s'), $dynamicLink["link"]]);
+                    return 3;
             }
         }
         return 8;
+    }
+
+    public function resetpw(array $post): bool
+    {
+        if (!isset($post["email"]))
+            return false;
+        $user = $this->getUserByEmail($post["email"]);
+        if (!$user)
+            return false;
+        return $this->createEmail($user["email"], 1, null, $user["id"]);
     }
 }

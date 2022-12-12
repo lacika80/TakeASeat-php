@@ -90,6 +90,28 @@ class LoginController extends BaseController
         }
         die();
     }
+    public function pwreset()
+    {
+        if ($this->loginCheck())
+            header("Location: /app/choose");
+        $data = [
+            "bootstrap",
+            /* "swiper",
+            "srimages" => $image->GetActives(),
+            "blogs" => $content->Get3Blog(),
+            "introduction" => $content->GetIntroduction($strJsonFileContents["introductionId"]),
+            "meta" => [["google-signin-client_id", "609239401095-3sc7srtqc53q6bgb2l1o7e06cbgdkjr6.apps.googleusercontent.com"]]*/
+        ];
 
+        $this->View("Login/resetpw", $data);
+    }
+    public function pwresetpost(){
+$account=new Account();
+if ($account->resetpw($_POST)){
+    header("Location: /login?StatusCode=" . 10);
+}
+        else header("Location: /login?StatusCode=" . 11);
+
+    }
 
 }

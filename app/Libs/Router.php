@@ -15,7 +15,6 @@ class Router
 
     public function parse_url()
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             if (empty($_GET)) {
                 $_GET["Controller"] = "Index";
                 $_GET["Action"] = "index";
@@ -38,28 +37,6 @@ class Router
                 $indexController->specURL();
             }
             exit();
-
-        } else {
-            /*//ha nem get... átirásra vár
-            echo $_POST ;
-            header('Content-type: application/json');
-            echo (json_encode([$_POST]));
-
-            return ( http_response_code(200));
-            print_r($_GET);
-            print_r("<hr>");
-            print_r($_POST);
-            exit();*/
-
-
-            /*$home = new App\Controllers\IndexController();
-            $home->Index();*/
-
-            $controllerName = "App\Controllers\\" . $_GET["Controller"] . "Controller";
-            $controller = new $controllerName;
-            $action = $_GET["Action"];
-            $controller->$action($_POST);
-        }
         /* }
                     if ($_GET["Controller"] == "" && $_GET["Action"] == "") {
                         $home = new IndexController();

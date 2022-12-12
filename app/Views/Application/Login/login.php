@@ -42,7 +42,7 @@
         <?php endif; ?>
 
         <?php if (!isset($_GET["register"])) : ?>
-            <div class="d-flex flex-column my-5 text-center" style="width: 30rem" id="loginContainer">
+            <div class="d-flex flex-column my-5 text-center" style="width: 35rem" id="loginContainer">
                 <p class="mx-auto mt-3 mb-0 fs-5 text-light">Kérem jelentkezzen be az alábbi módok egyikén</p>
                 <hr class="mx-auto" style="width: 20rem; border-top: 2px solid #171717">
                 <form id="loginForm" style="width: 30rem; text-align: left" action="Login/login" method="post"
@@ -66,7 +66,7 @@
                 <hr class="mx-auto my-2" style="width: 20rem; border-top: 2px solid #171717">
                 <div class="mt-1 d-flex justify-content-evenly">
                     <a class="btn" style="width: 25%; color: white" href="Login?register=true">Regisztráció</a>
-                    <button class="btn" style="width: 25%; color: white" disabled>Segítség</button>
+                    <a class="btn" style="width: 40%; color: white" href="Login/pwreset" >Elfelejtett jelszó</a>
                 </div>
 
                 <hr class="mx-auto" style="width: 20rem; border-top: 2px solid #171717">

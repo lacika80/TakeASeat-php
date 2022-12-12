@@ -87,6 +87,18 @@ require_once('app/Views/Application/' . $view . '.php'); ?>
             case 9:
                 echo "Sikeres aktiválta e-mail címét";
                 break;
+            case 10:
+                echo "Kérése sikeresen végrehajtva";
+                break;
+            case 11:
+                echo "Kérését nem sikerült végrehajtani";
+                break;
+            case 12:
+                echo "A jelszavak nem eggyeznek";
+                break;
+            case 13:
+                echo "a jelszó változtatás sikeresen végrehajtva, mostmár bejelentkezhet.";
+                break;
         }?>'));
 
     </script>

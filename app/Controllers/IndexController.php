@@ -30,9 +30,20 @@ class IndexController extends BaseController{
             case 3:
                 header("Location: /app/choose?StatusCode=9");
                 break;
+            case 1:
+            header("Location: /login?StatusCode=13");
+            break;
         }
         if ($code>3)
-            header("Location: /login?StatusCode=".$code);
+            switch ($code){
+                case 12:
+                    $linkbuild = $_SERVER["HTTP_REFERER"]."&StatusCode=".$code;
+                    header("Location: ".$linkbuild);
+                    break;
+                default:
+                    header("Location: /login?StatusCode=".$code);
+            }
+
         die();
     }
 }
